@@ -164,6 +164,6 @@ const { createUser, userExist, setData, getData } = require("RgDb");
     console.log("User does not exist.");
   }
 }
-
+```
 This concludes the documentation for RgDb Library.
  Feel free to contact [@ROBBING_GAMER](https://t.me/telegram.me/ROBBING_GAMER) on telegram for any help..
