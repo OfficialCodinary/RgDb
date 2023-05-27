@@ -141,9 +141,6 @@ Here's an example demonstrating the usage of the library:
 ```javascript
 const { createUser, userExist, setData, getData } = require("your-library-name");
 
-async function main() {
-  await setupDb();
-
   // Create a new user
   const created = await createUser("john123");
   if (created) {
@@ -168,9 +165,5 @@ async function main() {
   }
 }
 
-main().catch(console.error);
-```
-
-Remember to replace `your-library-name` with the actual name of your library when requiring it.
-
-This concludes the documentation for your Node.js library. Feel free to customize and enhance it further to meet your specific requirements.
+This concludes the documentation for RgDb Library.
+ Feel free to contact [@ROBBING_GAMER](https://t.me/telegram.me/ROBBING_GAMER) on telegram for any help..
