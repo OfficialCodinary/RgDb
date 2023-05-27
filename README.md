@@ -18,7 +18,7 @@ Before using the library, make sure you have Node.js installed on your system. Y
 To install the library, you can use npm, the package manager for Node.js. Open your terminal and run the following command:
 
 ```shell
-npm install your-library-name
+npm install RgDb
 ```
 
 ## Functions
@@ -139,7 +139,7 @@ if (exists) {
 Here's an example demonstrating the usage of the library:
 
 ```javascript
-const { createUser, userExist, setData, getData } = require("your-library-name");
+const { createUser, userExist, setData, getData } = require("RgDb");
 
   // Create a new user
   const created = await createUser("john123");
