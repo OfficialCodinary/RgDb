@@ -20,47 +20,56 @@ To install the library, you can use npm, the package manager for Node.js. Open y
 ```shell
 npm install RgDb
 ```
+After that import it onto your prject by simply using
+```javascript
+const RgDb = require('rgdb')
+```
+
 
 ## Functions
 ### createUser
 
 ```javascript
-async function createUser(userId)
+async function RgDb.createUser(userID)
 ```
 
-The `createUser` function creates a new user in the database. It takes a `userId` parameter as input and generates a corresponding user file in the database directory.
+The `createUser` function creates a new user in the database. It takes a `userID` parameter as input and generates a corresponding user file in the database directory.
 
 **Parameters:**
 
-- `userId` (string): The ID of the user to create.
+- `userID` (string): The ID of the user to create.
 
 **Returns:**
 
 - Returns `true` if the user is created successfully.
-- Returns `false` if the user already exists or if the `userId` parameter is not provided.
+- Returns `false` if the user already exists or if the `userID` parameter is not provided.
 
 **Example:**
 
 ```javascript
-const created = await createUser("john123");
-if (created) {
+RgDb.createUser("john123")
+.then((res) => {
+  if (res) {
   console.log("User created successfully.");
 } else {
-  console.log("User already exists or invalid userId provided.");
+  console.log("User already exists or invalid userID provided.");
 }
+})
 ```
 
 ### setData
 
 ```javascript
-async function setData(userId, dataName, value, type, isBeautify)
+async function RgDb.setData(userID, dataName, value, type, isBeautify)
 ```
 
 The `setData` function allows you to set data for a specific user in the database. You can specify the user ID, the data name, the value to set, the type of data (global or private), and whether to beautify the resulting JSON file.
 
+The user is created automatically. if he doesn't exist!
+
 **Parameters:**
 
-- `userId` (string): The ID of the user to set data for.
+- `userID` (string): The ID of the user to set data for.
 - `dataName` (string): The name of the data field.
 - `value` (any): The value to set for the specified data field.
 - `type` (string): The type of data. Valid values are "global" or "private".
@@ -74,20 +83,20 @@ The `setData` function allows you to set data for a specific user in the databas
 **Example:**
 
 ```javascript
-await setData("john123", "name", "John Doe", "private", true);
+await RgDb.setData("john123", "name", "John Doe", "private", true);
 ```
 
 ### getData
 
 ```javascript
-async function getData(userId, dataName, type, defaultValue = null)
+async function RgDb.getData(userID, dataName, type, defaultValue = null)
 ```
 
 The `getData` function retrieves the value of a specific data field for a given user ID from the database. You can specify the user ID, the data name, the type of data (global or private), and an optional default value to return if the data field doesn't exist.
 
 **Parameters:**
 
-- `userId` (string): The ID of the user to retrieve data for.
+- `userID` (string): The ID of the user to retrieve data for.
 - `dataName` (string): The name of the data
 
  field.
@@ -102,21 +111,21 @@ The `getData` function retrieves the value of a specific data field for a given 
 **Example:**
 
 ```javascript
-const name = await getData("john123", "name", "private", "Unknown");
+const name = await RgDb.getData("john123", "name", "private", "Unknown");
 console.log("User name:", name);
 ```
 
 ### userExist
 
 ```javascript
-async function userExist(filePath)
+async function RgDb.userExist(userID)
 ```
 
 The `userExist` function checks if a user with the specified file path exists in the database.
 
 **Parameters:**
 
-- `filePath` (string): The file path of the user data file.
+- `userID` (string): The id of the user that is used at the time of creation
 
 **Returns:**
 
@@ -126,12 +135,14 @@ The `userExist` function checks if a user with the specified file path exists in
 **Example:**
 
 ```javascript
-const exists = await userExist("john123");
-if (exists) {
-  console.log("User exists.");
-} else {
-  console.log("User does not exist.");
-}
+RgDb.userExist("john123")
+.then((res) => {
+  if (res) {
+    console.log("User exists.");
+  } else {
+    console.log("User does not exist.");
+  }
+})
 ```
 
 ## Usage
@@ -139,31 +150,38 @@ if (exists) {
 Here's an example demonstrating the usage of the library:
 
 ```javascript
-const { createUser, userExist, setData, getData } = require("RgDb");
+const RgDb = require("RgDb");
 
   // Create a new user
-  const created = await createUser("john123");
-  if (created) {
-    console.log("User created successfully.");
-  } else {
-    console.log("User already exists or invalid userId provided.");
-  }
+  RgDb.createUser("john123")
+  .then((res) => {
+    if (res) {
+      console.log("User created successfully.");
+    } else {
+      console.log("User already exists or invalid userID provided.");
+    }
+  })
 
   // Set data for the user
-  await setData("john123", "name", "John Doe", "private", true);
+  RgDb.setData("john123", "name", "John Doe", "private", true)
+  .then(async (res) => {
 
   // Get data for the user
-  const name = await getData("john123", "name", "private", "Unknown");
+  const name = await RgDb.getData("john123", "name", "private", "Unknown");
   console.log("User name:", name);
+  })
+
 
   // Check if the user exists
-  const exists = await userExist("john123");
-  if (exists) {
-    console.log("User exists.");
-  } else {
-    console.log("User does not exist.");
+  RgDb.userExist("john123")
+    .then((res) => {
+     if (res) {
+      console.log("User exists.");
+     } else {
+      console.log("User does not exist.");
   }
-}
+})
 ```
 This concludes the documentation for RgDb Library.
- Feel free to contact [@ROBBING_GAMER](https://t.me/telegram.me/ROBBING_GAMER) on telegram for any help..
+
+ Feel free to contact [@ROBBING_GAMER](https://t.me/ROBBING_GAMER) on telegram for any help..
