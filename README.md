@@ -100,8 +100,6 @@ The `getData` function retrieves the value of a specific data field for a given 
 
 - `userID` (string): The ID of the user to retrieve data for.
 - `dataName` (string): The name of the data
-
- field.
 - `type` (string): The type of data. Valid values are "global" or "private".
 - `defaultValue` (any, optional): The default value to return if the data field doesn't exist. Default is `null`.
 
