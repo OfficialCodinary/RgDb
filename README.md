@@ -20,7 +20,9 @@ To install the library, you can use npm, the package manager for Node.js. Open y
 ```shell
 npm install RgDb
 ```
-After that import it onto your prject by simply using
+
+After that import it onto your project by simply using
+
 ```javascript
 const RgDb = require('rgdb')
 ```
