@@ -32,7 +32,7 @@ const RgDb = require('rgdb')
 ### createUser
 
 ```javascript
-async function RgDb.createUser(userID)
+await RgDb.createUser(userID)
 ```
 
 The `createUser` function creates a new user in the database. It takes a `userID` parameter as input and generates a corresponding user file in the database directory.
@@ -62,7 +62,7 @@ RgDb.createUser("john123")
 ### setData
 
 ```javascript
-async function RgDb.setData(userID, dataName, value, type, isBeautify)
+await RgDb.setData(userID, dataName, value, type, isBeautify)
 ```
 
 The `setData` function allows you to set data for a specific user in the database. You can specify the user ID, the data name, the value to set, the type of data (global or private), and whether to beautify the resulting JSON file.
@@ -91,7 +91,7 @@ await RgDb.setData("john123", "name", "John Doe", "private", true);
 ### getData
 
 ```javascript
-async function RgDb.getData(userID, dataName, type, defaultValue = null)
+await RgDb.getData(userID, dataName, type, defaultValue = null)
 ```
 
 The `getData` function retrieves the value of a specific data field for a given user ID from the database. You can specify the user ID, the data name, the type of data (global or private), and an optional default value to return if the data field doesn't exist.
