@@ -1,4 +1,6 @@
 # RgDb Library Documentation
+>Created with love by [@Codinary](https://t.me/Codinary)
+
 
 This documentation provides an overview and usage guide for the RgDb Library. The library offers functions for creating and managing user data in a file-based database system. Let's explore the available functions and their usage.
 
