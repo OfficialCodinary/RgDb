@@ -1,4 +1,4 @@
-const fs = require("node:fs");
+const fs = require("fs").promises;
 
 /**
  * Represents a simple database for storing and managing data.
@@ -14,20 +14,38 @@ class Database {
     /** @private */
     this._databasePath = `./Database/${this._databaseName}`;
 
-    // Create the parent directory if it doesn't exist
-    if (!fs.existsSync('./Database')) {
-      fs.mkdirSync('./Database');
-    }
+    this._initializeDatabase();
+  }
 
-    // Create the database directory if it doesn't exist
-    if (!fs.existsSync(this._databasePath)) {
-      fs.mkdirSync(this._databasePath);
-    }
+  /**
+   * Initializes the database directory and default data file.
+   * @private
+   */
+  async _initializeDatabase() {
+    try {
+      if (!await fs.access('./Database').catch(() => false)) {
+        await fs.mkdir('./Database');
+      }
 
-    // Create the default data file if it doesn't exist
+      if (!await fs.access(this._databasePath).catch(() => false)) {
+        await fs.mkdir(this._databasePath);
+        await this._createDefaultDataFile();
+      }
+    } catch (err) {
+      console.error("Error initializing database:", err);
+    }
+  }
+
+  /**
+   * Creates the default data file if it doesn't exist.
+   * @private
+   */
+  async _createDefaultDataFile() {
     const defaultDataPath = `${this._databasePath}/allData.json`;
-    if (!fs.existsSync(defaultDataPath)) {
-      fs.writeFileSync(defaultDataPath, JSON.stringify([{}]));
+    try {
+      await fs.writeFile(defaultDataPath, JSON.stringify([{}]));
+    } catch (err) {
+      console.error("Error creating default data file:", err);
     }
   }
 
@@ -48,12 +66,12 @@ class Database {
         await this._createUser(userID);
       }
 
-      let data = fs.existsSync(path) ? JSON.parse(fs.readFileSync(path)) : [{}];
+      let data = await fs.readFile(path, 'utf8').then(JSON.parse).catch(() => [{}]);
       data[0][dataName] = value;
-      fs.writeFileSync(path, JSON.stringify(data, null, isBeautify ? 2 : 0));
+      await fs.writeFile(path, JSON.stringify(data, null, isBeautify ? 2 : 0));
       return true;
     } catch (err) {
-      console.log(err);
+      console.error("Error setting data:", err);
       return false;
     }
   }
@@ -66,18 +84,22 @@ class Database {
    * @returns {Promise<*>} - Returns the retrieved data or the default value.
    */
   async getData(userID, dataName, defaultValue = false) {
-    dataName = dataName.replace(/[A-Z]/g, c => c.toLowerCase());
-    const path = userID ? `${this._databasePath}/user-${userID}.json` : `${this._databasePath}/allData.json`;
+    try {
+      dataName = dataName.replace(/[A-Z]/g, c => c.toLowerCase());
+      const path = userID ? `${this._databasePath}/user-${userID}.json` : `${this._databasePath}/allData.json`;
 
-    if (!await this.userExist(userID)) {
-      return defaultValue;
-    }
+      if (!await this.userExist(userID)) {
+        return defaultValue;
+      }
 
-    const data = JSON.parse(fs.readFileSync(path, "utf8"));
-
-    if (Object.keys(data[0]).includes(dataName)) {
-      return data[0][dataName];
-    } else {
+      const data = JSON.parse(await fs.readFile(path, 'utf8'));
+      if (Object.keys(data[0]).includes(dataName)) {
+        return data[0][dataName];
+      } else {
+        return defaultValue;
+      }
+    } catch (err) {
+      console.error("Error getting data:", err);
       return defaultValue;
     }
   }
@@ -89,7 +111,7 @@ class Database {
    */
   async userExist(userID) {
     if (!userID) return true;
-    return fs.existsSync(`${this._databasePath}/user-${userID}.json`);
+    return fs.access(`${this._databasePath}/user-${userID}.json`).then(() => true).catch(() => false);
   }
 
   /**
@@ -98,16 +120,17 @@ class Database {
    * @returns {Promise<boolean>} - Returns true if the user data file was created, otherwise false.
    */
   async _createUser(userID) {
-    if (!userID) {
-      return null;
+    if (!userID) return null;
+    try {
+      if (!await fs.access(`${this._databasePath}/user-${userID}.json`).catch(() => false)) {
+        await fs.writeFile(`${this._databasePath}/user-${userID}.json`, '[{}]');
+        return true;
+      }
+      return false;
+    } catch (err) {
+      console.error("Error creating user data file:", err);
+      return false;
     }
-
-    if (!fs.existsSync(`${this._databasePath}/user-${userID}.json`)) {
-      fs.writeFileSync(`${this._databasePath}/user-${userID}.json`, '[{}]');
-      return true;
-    }
-
-    return false;
   }
 
   /**
@@ -116,11 +139,10 @@ class Database {
    */
   async clearAll() {
     try {
-      fs.rmSync(this._databasePath, {
-        recursive: true
-      });
+      await fs.rm(this._databasePath, { recursive: true });
       return true;
     } catch (err) {
+      console.error("Error clearing all data:", err);
       return false;
     }
   }
