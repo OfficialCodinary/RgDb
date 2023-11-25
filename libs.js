@@ -44,7 +44,7 @@ class Database {
       dataName = dataName.replace(/[a-zA-Z]/g, c => c.toLowerCase());
       const path = userID ? `${this._databasePath}/user-${userID}.json` : `${this._databasePath}/allData.json`;
 
-      if (!await this._userExist(userID)) {
+      if (!await this.userExist(userID)) {
         await this._createUser(userID);
       }
 
@@ -69,7 +69,7 @@ class Database {
     dataName = dataName.replace(/[A-Z]/g, c => c.toLowerCase());
     const path = userID ? `${this._databasePath}/user-${userID}.json` : `${this._databasePath}/allData.json`;
 
-    if (!await this._userExist(userID)) {
+    if (!await this.userExist(userID)) {
       return defaultValue;
     }
 
@@ -87,7 +87,7 @@ class Database {
    * @param {string|null} userID - The user identifier.
    * @returns {Promise<boolean>} - Returns true if the user's data file exists, otherwise false.
    */
-  async _userExist(userID) {
+  async userExist(userID) {
     if (!userID) return true;
     return fs.existsSync(`${this._databasePath}/user-${userID}.json`);
   }

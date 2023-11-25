@@ -1,96 +1,81 @@
-## RgDb Library Documentation
+
+
+## RgDb Library
 
 ### Overview
-The `RgDb` library provides a simple database system for storing and managing data.
+RgDb is a simple database for storing and managing data within Node.js applications.
 
 ### Installation
-To install the library, use npm:
+To install RgDb, use npm:
 ```bash
 npm install rgdb
 ```
 
 ### Usage
-Import the library:
 ```javascript
 const RgDb = require('rgdb');
-```
 
-Create an instance of the database:
-```javascript
+// Create a new database instance
 const myDatabase = new RgDb('myDatabaseName');
+
+// Set data
+myDatabase.setData('userID', 'dataName', 'value')
+  .then(success => {
+    if (success) {
+      console.log('Data set successfully.');
+    } else {
+      console.error('Failed to set data.');
+    }
+  });
+
+// Get data
+myDatabase.getData('userID', 'dataName')
+  .then(data => {
+    console.log('Retrieved data:', data);
+  });
+
+// Clear all data in the database
+myDatabase.clearAll()
+  .then(success => {
+    if (success) {
+      console.log('Database cleared successfully.');
+    } else {
+      console.error('Failed to clear database.');
+    }
+  });
 ```
 
-### Class: Database
+### API Reference
 
-Represents a simple database for storing and managing data.
+#### `new RgDb(databaseName)`
+- Constructor to create a new database instance.
+- **Parameters:**
+  - `databaseName` (string): The name of the database.
 
-#### Constructor
-Creates a new Database instance.
-```javascript
-new Database(databaseName)
-```
-- `databaseName` (`string`): The name of the database.
+#### `setData(userID, dataName, value, isBeautify = false)`
+- Set data for a user or the general dataset.
+- **Parameters:**
+  - `userID` (string|null): The user identifier.
+  - `dataName` (string): The name of the data to set.
+  - `value` (*): The value to set.
+  - `isBeautify` (boolean, optional): Whether to beautify the JSON. Default is `false`.
+- **Returns:** `Promise<boolean>` - Returns `true` if successful, `false` otherwise.
 
-#### Methods
-
-#### `setData(userID, dataName, value, isBeautify=false)`
-Sets data for a user or the general dataset.
-```javascript
-await myDatabase.setData(userID, dataName, value, isBeautify);
-```
-- `userID` (`string|null`): The user identifier.
-- `dataName` (`string`): The name of the data to set.
-- `value` (`*`): The value to set.
-- `isBeautify` (`boolean`, optional): Whether to beautify the JSON (default: `false`).
-- Returns a `Promise<boolean>`: Returns `true` if successful, `false` otherwise.
-
-#### `getData(userID, dataName, defaultValue=false)`
-Gets data for a user or the general dataset.
-```javascript
-await myDatabase.getData(userID, dataName, defaultValue);
-```
-- `userID` (`string|null`): The user identifier.
-- `dataName` (`string`): The name of the data to retrieve.
-- `defaultValue` (`*`, optional): The default value if data doesn't exist (default: `false`).
-- Returns a `Promise<*>`: Returns the retrieved data or the default value.
+#### `getData(userID, dataName, defaultValue = false)`
+- Get data for a user or the general dataset.
+- **Parameters:**
+  - `userID` (string|null): The user identifier.
+  - `dataName` (string): The name of the data to retrieve.
+  - `defaultValue` (*, optional): The default value if data doesn't exist. Default is `false`.
+- **Returns:** `Promise<*>` - Returns the retrieved data or the default value.
 
 #### `clearAll()`
-Clears all data in the database.
-```javascript
-await myDatabase.clearAll();
-```
-- Returns a `Promise<boolean>`: Returns `true` if data was cleared successfully, otherwise `false`.
-
-###Basic Example:
-```javascript
-const db = new Database('myDatabase');
-
-db.setData('user123', 'age', 25)
-  .then(success => {
-    if (success) {
-      console.log('Data set successfully!');
-    } else {
-      console.log('Failed to set data.');
-    }
-  });
-
-db.getData('user123', 'age', 'No age found')
-  .then(data => {
-    console.log('User age:', data);
-  });
-
-db.clearAll()
-  .then(success => {
-    if (success) {
-      console.log('Database cleared successfully!');
-    } else {
-      console.log('Failed to clear the database.');
-    }
-  });
-
-```
+- Clear all data in the database.
+- **Returns:** `Promise<boolean>` - Returns `true` if data was cleared successfully, `false` otherwise.
 
 ### Support and Help
-For further assistance or support, contact **@ROBBING_GAMER** on Telegram.
+For assistance and support, contact **@ROBBING_GAMER** on Telegram.
 
-This documentation should help users understand and utilize the functionalities provided by the `RgDb` library effectively.
+---
+
+Feel free to hit a PR to fix any errors you come across!
