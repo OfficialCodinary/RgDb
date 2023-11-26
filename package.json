@@ -1,6 +1,6 @@
 {
   "name": "rgdb",
-  "version": "0.21.2",
+  "version": "0.21.3",
   "description": "An easy-to-use nodejs JSON-based database library.",
   "main": "libs.js",
   "repository": {

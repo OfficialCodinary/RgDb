@@ -14,7 +14,8 @@ class Database {
     /** @private */
     this._databasePath = `./Database/${this._databaseName}`;
 
-    this._initializeDatabase();
+    this._initializeDatabase()
+    
   }
 
   /**
@@ -23,14 +24,15 @@ class Database {
    */
   async _initializeDatabase() {
     try {
-      if (!await fs.access('./Database').catch(() => false)) {
-        await fs.mkdir('./Database');
-      }
-
-      if (!await fs.access(this._databasePath).catch(() => false)) {
+      fs.access('./Database')
+      .catch(async() => {
+        await fs.mkdir('./Database')
+      })
+      fs.access(this._databasePath)
+      .catch(async () => {
         await fs.mkdir(this._databasePath);
         await this._createDefaultDataFile();
-      }
+      })
     } catch (err) {
       console.error("Error initializing database:", err);
     }
@@ -111,7 +113,13 @@ class Database {
    */
   async userExist(userID) {
     if (!userID) return true;
-    return fs.access(`${this._databasePath}/user-${userID}.json`).then(() => true).catch(() => false);
+    fs.access(`${this._databasePath}/user-${userID}.json`)
+    .then(() => {
+      return true
+    })
+    .catch(() => {
+      return false
+      });
   }
 
   /**
